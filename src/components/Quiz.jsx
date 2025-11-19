@@ -14,10 +14,10 @@ function reducer(list, action) {
         ...list,
         index: list.index + 1,
         isTrue: false,
-        curQuestion: data.questions[list.index].question,
-        curOptions: data.questions[list.index].options,
-        curCorrectOption: data.questions[list.index].correctOption,
-        curQuestionPoints: data.questions[list.index].points,
+        curQuestion: data.questions[list.index + 1].question,
+        curOptions: data.questions[list.index + 1].options,
+        curCorrectOption: data.questions[list.index + 1].correctOption,
+        curQuestionPoints: data.questions[list.index + 1].points,
       };
     case "show answer":
       return {
@@ -40,6 +40,12 @@ function reducer(list, action) {
         curQuestionPoints: data.questions[0].points,
       };
     case "finish":
+      const highScore = localStorage?.getItem("highScore");
+      if (highScore) {
+        +highScore < list.curScore &&
+          localStorage.setItem("highScore", list.curScore);
+      } else localStorage.setItem("highScore", list.curScore);
+
       return {
         ...list,
         isFinished: true,
